@@ -51,10 +51,18 @@ int32_t parse(const char* input, size_t input_len,
 EMSCRIPTEN_KEEPALIVE
 int32_t convert(const uint8_t* input, size_t input_len,
                 uint8_t* output, size_t output_len) {
-    // TODO: implement format conversion
-    (void)input; (void)input_len;
-    (void)output; (void)output_len;
-    return -1;
+    try {
+        // Convert raw input (JSON text) to FlatBuffers binary
+        std::string text(reinterpret_cast<const char*>(input), input_len);
+        if (!eia::validate(text)) return -3;
+        auto ds = eia::parse_json(text);
+        std::string fb = eia::to_flatbuffers(ds);
+        if (fb.size() > output_len) return -2;
+        std::memcpy(output, fb.data(), fb.size());
+        return static_cast<int32_t>(fb.size());
+    } catch (...) {
+        return -1;
+    }
 }
 
 } // extern "C"
