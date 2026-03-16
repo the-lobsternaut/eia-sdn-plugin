@@ -1,0 +1,18 @@
+{
+  "schemaVersion": 1,
+  "name": "eia",
+  "version": "0.1.0",
+  "description": "US Energy Information Administration. Parses WTI/Brent crude, natural gas, inventories",
+  "author": "DigitalArsenal",
+  "license": "Apache-2.0",
+  "inputFormats": ["application/json"],
+  "outputFormats": ["$EIA"],
+  "dataSources": [
+    {
+      "name": "eia",
+      "url": "https://api.eia.gov/",
+      "type": "REST",
+      "auth": "api_key (optional)"
+    }
+  ]
+}
